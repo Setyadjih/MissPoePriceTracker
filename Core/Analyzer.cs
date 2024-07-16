@@ -3,10 +3,6 @@ using MissPoeAnalysis.Core;
 using System.Diagnostics;
 using System.IO;
 
-Debug.WriteLine("Testing here");
-string fp = "D:\\repos\\MissPoeAnalysis\\TestData\\Pembelian 2024.xlsx";
-var foob = new Analyzer(fp);
-
 namespace MissPoeAnalysis.Core
 {
     public class Analyzer

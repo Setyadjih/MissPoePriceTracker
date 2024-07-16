@@ -25,17 +25,22 @@ namespace MissPoeAnalysis
         public MainWindow()
         {
             InitializeComponent();
+            Debug.WriteLine("Testing here");
+            string fp = "D:\\repos\\MissPoeAnalysis\\TestData\\Pembelian 2024.xlsx";
+            var foob = new Analyzer(fp);
 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine("Loading DB");
             _context.Database.EnsureCreated();
             _context.Items.Load();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            Debug.WriteLine("Tear down DB");
             _context.Database.EnsureDeleted();
             _context.Dispose();
             base.OnClosing(e);
