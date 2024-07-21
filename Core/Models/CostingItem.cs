@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MissPoeAnalysis.Core.Models
 {
-    public class Item
+    public class CostingItem
     {
-        [Key]
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
 
         public string Vendor { get; set; } = null!;

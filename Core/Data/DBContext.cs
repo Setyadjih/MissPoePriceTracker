@@ -12,7 +12,7 @@ namespace MissPoeAnalysis.Core.Data;
 
 public class DBContext : DbContext
 {
-    public DbSet<Item> Items { get; set; } = null!;
+    public DbSet<CostingItem> Items { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

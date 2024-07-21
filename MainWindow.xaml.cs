@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MissPoeAnalysis.Core;
+using MissPoeAnalysis.Core.Models;
 using MissPoeAnalysis.Core.Data;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -21,25 +22,35 @@ namespace MissPoeAnalysis
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly DBContext _context = new DBContext();
+        private readonly DBContext _context = new();
         public MainWindow()
         {
             InitializeComponent();
-            Debug.WriteLine("Testing here");
-            string fp = "D:\\repos\\MissPoeAnalysis\\TestData\\Pembelian 2024.xlsx";
-            var foob = new Analyzer(fp);
+            
 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Loading DB");
+            Debug.WriteLine("Creating New DB");
+            _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
             _context.Items.Load();
+
+            Debug.WriteLine("Testing here");
+            string fp = "D:\\repos\\MissPoeAnalysis\\TestData\\Pembelian 2024.xlsx";
+            var foob = new Analyzer(fp, _context);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            Debug.WriteLine("Checking Item");
+            var items = _context.Items.Where(i => i.Vendor == "Tiara");
+            foreach (var item in items)
+            {
+                Debug.WriteLine($"{item.Name}, {item.Vendor}, {item.Price}, {item.Date}");
+            }
+
             Debug.WriteLine("Tear down DB");
             _context.Database.EnsureDeleted();
             _context.Dispose();
