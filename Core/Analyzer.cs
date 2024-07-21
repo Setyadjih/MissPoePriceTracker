@@ -1,5 +1,9 @@
 ﻿using ClosedXML.Excel;
+
+using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office.CustomUI;
+using Microsoft.EntityFrameworkCore;
+
 using MissPoeAnalysis.Core.Data;
 using MissPoeAnalysis.Core.Models;
 using System.Diagnostics;
@@ -9,16 +13,34 @@ namespace MissPoeAnalysis.Core
 {
     public class Analyzer
     {
-        public Analyzer(string? path, DBContext _context)
-        {
-            if (path != null)
-            {
-                LoadBook(path, _context);
-            }
+        private readonly DBContext dbContext = new();
 
+        public Analyzer()
+        {
+            Debug.WriteLine("Creating New DB");
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureCreated();
+            dbContext.Items.Load();
         }
 
-        public void LoadBook(string path, DBContext dBContext)
+        public void Dispose()
+        {
+            Debug.WriteLine("Tear down DB");
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+        }
+
+        public void GetItems()
+        {
+            var items = dbContext.Items.Where(i => i.Vendor == "Tiara");
+            foreach (var item in items)
+            {
+                Debug.WriteLine($"{item.Name}, {item.Vendor}, {item.Price}, {item.Date}");
+            }
+        }
+
+
+            public void LoadBook(string path)
         {
             Debug.WriteLine($"Loading from: {path}");
             var workbook = new XLWorkbook(path);
@@ -56,10 +78,10 @@ namespace MissPoeAnalysis.Core
                         Price = unitPrice,
                         Vendor = worksheet.Name
                     };
-                    dBContext.Add(i);
+                    dbContext.Add(i);
                 }
             }
-            dBContext.SaveChanges();
+            dbContext.SaveChanges();
         }
 
     }
