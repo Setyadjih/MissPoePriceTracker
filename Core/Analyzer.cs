@@ -2,10 +2,12 @@
 
 using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office.CustomUI;
+
 using Microsoft.EntityFrameworkCore;
 
 using MissPoeAnalysis.Core.Data;
 using MissPoeAnalysis.Core.Models;
+
 using System.Diagnostics;
 using System.IO;
 
@@ -39,8 +41,7 @@ namespace MissPoeAnalysis.Core
             }
         }
 
-
-            public void LoadBook(string path)
+        public void LoadBook(string path)
         {
             Debug.WriteLine($"Loading from: {path}");
             var workbook = new XLWorkbook(path);
